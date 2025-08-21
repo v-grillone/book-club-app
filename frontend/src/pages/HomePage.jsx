@@ -1,8 +1,12 @@
-import React from 'react'
+import BookClubCard from "../components/BookClubCard.jsx"
+import Navbar from "../components/Navbar.jsx"
 
 function HomePage() {
   return (
-    <div>HomePage</div>
+    <>
+      <BookClubCard />
+    </>
+
   )
 }
 

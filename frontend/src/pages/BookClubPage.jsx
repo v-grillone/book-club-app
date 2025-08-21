@@ -1,8 +1,10 @@
-import React from 'react'
+import Navbar from '../components/Navbar.jsx'
 
 function BookClubPage() {
   return (
-    <div>BookClubPage</div>
+    <div className='min-h-screen'>
+      <Navbar />
+    </div>
   )
 }
 
