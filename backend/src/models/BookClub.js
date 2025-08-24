@@ -6,6 +6,8 @@ const bookClubSchema = new mongoose.Schema({
   genre: { type: String, required: true },
   members: {type: Number, required: true },
   speed: { type: Number, required: true},
+  startDate: { type: Date, required: true},
+  coverImageURL: { type: String },
   createdAt: { type: Date, default: Date.now },
 });
 

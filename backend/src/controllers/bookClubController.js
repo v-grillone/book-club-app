@@ -10,17 +10,44 @@ export async function getAllClubs(_, res) {
 }
 
 export async function createClub(req, res) {
-  const { title, author, genre, members, speed } = req.body;
+  const { title, author, genre, members, startDate, speed } = req.body;
 
   if (!title || !author || !genre || !members || !speed) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
   try {
-    const newClub = new BookClub({ title, author, genre, members, speed });
+    const newClub = new BookClub({
+      title,
+      author,
+      genre,
+      members,
+      speed,
+      startDate,
+      coverImageUrl: req.file ? req.file.path : null,
+    });
     await newClub.save();
     res.status(201).json(newClub);
   } catch (error) {
     res.status(500).json({ message: "Error creating book club" });
+  }
+}
+
+export async function updateClub(req, res) {
+  const { id } = req.params; // club ID from the route
+  try {
+    const updatedClub = await BookClub.findByIdAndUpdate(
+      id,
+      req.body,
+      { new: true, runValidator: true }
+    );
+
+    if (!updatedClub) {
+      return res.status(404).json({ message: "Book club not found" });
+    }
+
+    res.status(200).json(updatedClub);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating book club", error: error.message });
   }
 }

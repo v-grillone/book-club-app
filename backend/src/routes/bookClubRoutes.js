@@ -1,9 +1,12 @@
 import express from 'express';
-import { getAllClubs, createClub } from '../controllers/bookClubController.js';
+import multer from "multer";
+import { getAllClubs, createClub, updateClub } from '../controllers/bookClubController.js';
 
 const router = express.Router();
+const upload = multer({ dest: "uploads/" });
 
 router.get('/', getAllClubs);
-router.post('/', createClub);
+router.post('/', upload.single('image'), createClub);
+router.put('/:id', updateClub);
 
 export default router;

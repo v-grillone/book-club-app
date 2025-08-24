@@ -1,18 +1,24 @@
 import React from 'react'
 
-function BookClubCard() {
+function BookClubCard({ club }) {
   return (
-    <div className="card card-side bg-base-100 shadow-xl">
-      <figure>
+    <div className="card card-side bg-base-100 shadow-xl border border-base-200 hover:shadow-2xl transition duration-300 w-full max-w-2xl mx-auto">
+      <figure className='w-4/12'>
         <img
-          src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
-          alt="Movie" />
+          src={club.coverImageURL}
+          alt="Movie"
+          className="h-full w-full object-cover rounded-l-xl" />
       </figure>
       <div className="card-body">
-        <h2 className="card-title">New movie is released!</h2>
-        <p>Click the button to watch on Jetflix app.</p>
+        <h2 className="card-title">{club.title}</h2>
+        <p>By: {club.author}</p>
+        <p>Genre: {club.genre}</p>
+        <p>Members: {club.members}</p>
+        <p>Speed: {club.speed} pages a day.</p>
+        <p>Start date: {club.startDate}</p>
+        {/* <button className='btn btn-primary'>Join</button> */}
         <div className="card-actions justify-end">
-          <button className="btn btn-primary">Watch</button>
+          <button className="btn btn-primary">Join</button>
         </div>
       </div>
     </div>
