@@ -1,4 +1,5 @@
 import { Filter, Bell, User } from "lucide-react";
+import { Link } from "react-router";
 
 function Navbar() {
   return (
@@ -22,9 +23,9 @@ function Navbar() {
           <ul
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-            <li><a>Explore</a></li>
-            <li><a>Dashboard</a></li>
-            <li><a>Settings</a></li>
+            <li><Link to="/explore">Explore</Link></li>
+            <li><Link to="/dashboard">Dashboard</Link></li>
+            <li><Link to="/settings">Settings</Link></li>
           </ul>
         </div>
       </div>

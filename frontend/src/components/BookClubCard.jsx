@@ -1,4 +1,5 @@
 import React from 'react'
+import { formatDate } from '../lib/utils';
 
 function BookClubCard({ club }) {
   return (
@@ -15,7 +16,7 @@ function BookClubCard({ club }) {
         <p>Genre: {club.genre}</p>
         <p>Members: {club.members}</p>
         <p>Speed: {club.speed} pages a day.</p>
-        <p>Start date: {club.startDate}</p>
+        <p>Start date: {formatDate(new Date(club.startDate))}</p>
         {/* <button className='btn btn-primary'>Join</button> */}
         <div className="card-actions justify-end">
           <button className="btn btn-primary">Join</button>
