@@ -9,7 +9,12 @@ function HomePage() {
   useEffect(() => {
     const fetchBookClubs = async () => {
       try {
-        const res = await api.get("/");
+        const token = localStorage.getItem("token");
+        const res = await api.get("/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
         setBookClubs(res.data);        
       } catch (error) {
         console.error("Error fetching book clubs.", error);        

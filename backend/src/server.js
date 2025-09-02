@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import connectDB from './config/db.js';
 import dotenv from 'dotenv';
 import bookClubRoutes from './routes/bookClubRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 // Load enviroment variables
 dotenv.config()
@@ -20,6 +21,7 @@ app.use(morgan('dev'));
 
 // Routes
 app.use('/', bookClubRoutes);
+app.use('/user', userRoutes);
 
 
 // Database connection and server start
