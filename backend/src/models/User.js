@@ -4,6 +4,12 @@ const userSchema = new mongoose.Schema({
   username: {type: String, required: true},
   email: {type: String, required: true},
   password: {type: String, required: true},
+  joinedClubs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "BookClub"
+    }
+  ],
   createdAt: { type: Date, default: Date.now },
 });
 

@@ -1,6 +1,8 @@
 import User from "../models/User.js";
+import BookClub from "../models/BookClub.js"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+
 
 export async function userRegister(req, res) {
   const { username, email, password } = req.body;
@@ -34,5 +36,31 @@ export async function userLogin(req, res) {
   } catch (error) {
     console.error("Login error at userLogin controller:", error);
     res.status(500).json({ message: "Error logging in." });    
+  }
+}
+
+export async function joinClub(req, res) {
+  try {
+    const userId = req.user.id; // comes from authMiddleware
+    const { clubId } = req.body;
+
+    const club = await BookClub.findById(clubId)
+    if(!club) return res.status(404).json({message: "No book club found"});
+
+    const user = await User.findById(userId); 
+    if(user.joinedClubs.includes(clubId)) {
+      return res.status(400).json({message: "Already joined this club."})
+    }
+
+    user.joinedClubs.push(clubId);
+    await user.save();
+    club.members.push(userId);
+    await club.save();    
+
+    res.status(200).json({message: "Joined club successfully", user});
+    
+  } catch (error) {
+    console.error("Error joining club:", error);
+    res.status(500).json({message: "Server error joining club"});
   }
 }

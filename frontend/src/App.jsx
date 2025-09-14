@@ -1,10 +1,11 @@
 import { Route, Routes, useLocation } from 'react-router';
 
 import LandingPage from './pages/LandingPage';
-import HomePage from './pages/HomePage';
+import ExplorePage from './pages/ExplorePage.jsx';
 import BookClubPage from './pages/BookClubPage';
 import SignUpPage from './pages/SignUpPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import DashboardPage from './pages/DashboardPage.jsx';
 
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
@@ -21,8 +22,9 @@ function App() {
       {showNavbar && <Navbar />}
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/explore" element={<HomePage />} />
-        <Route path="/bookclub/:id" element={<BookClubPage />} />
+        <Route path="/explore" element={<ExplorePage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/:id" element={<BookClubPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
       </Routes>

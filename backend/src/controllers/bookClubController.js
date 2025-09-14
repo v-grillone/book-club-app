@@ -9,6 +9,24 @@ export async function getAllClubs(_, res) {
   }
 }
 
+export async function getBookClub(req, res) {
+  try {
+    console.log(req.params);
+    const { id } = req.params;
+    const bookClub = await BookClub.findById(id);
+
+    if(!bookClub) {
+      return res.status(404).json({message: "Book club not found."});
+    }
+    res.status(200).json(bookClub)
+    
+  } catch (error) {
+    console.error("Error fetching book club", error);
+    res.status(500).json({message: "Server error fetching book club"});
+    
+  }
+}
+
 export async function createClub(req, res) {
   const { title, author, genre, members, startDate, speed } = req.body;
 

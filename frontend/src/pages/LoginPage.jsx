@@ -19,14 +19,13 @@ function LoginPage() {
     try {
       const res = await api.post('/user/login', form);
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("userId", res.data.user.id);
 
       console.log("Login successful:", res.data);
       navigate('/explore');
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);      
     }
-    // TODO: Hook this up to your backend API (e.g. POST /api/auth/login)
-    console.log("Login submitted:", form);
   };
 
   return (

@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 function Navbar() {
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100 border-b-2">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -30,7 +30,7 @@ function Navbar() {
         </div>
       </div>
       <div className="navbar-center">
-        <Link to="/" className="btn btn-ghost text-xl">Readsocial</Link>
+        <Link to="/explore" className="btn btn-ghost text-xl">Readsocial</Link>
       </div>
       <div className="navbar-end">
         <button className="btn btn-ghost btn-circle">
