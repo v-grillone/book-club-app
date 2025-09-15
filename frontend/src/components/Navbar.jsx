@@ -1,7 +1,15 @@
-import { Filter, Bell, User } from "lucide-react";
 import { Link } from "react-router";
 
 function Navbar() {
+
+  const username = localStorage.getItem('username');
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
+  }
+
   return (
     <div className="navbar bg-base-100 border-b-2">
       <div className="navbar-start">
@@ -26,6 +34,7 @@ function Navbar() {
             <li><Link to="/explore">Explore</Link></li>
             <li><Link to="/dashboard">Dashboard</Link></li>
             <li><Link to="/settings">Settings</Link></li>
+            <li onClick={handleLogout}><Link to="/login">Logout</Link></li>
           </ul>
         </div>
       </div>
@@ -33,20 +42,7 @@ function Navbar() {
         <Link to="/explore" className="btn btn-ghost text-xl">Readsocial</Link>
       </div>
       <div className="navbar-end">
-        <button className="btn btn-ghost btn-circle">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </button>
+        <p className="text-sm">Welcome, {username}</p>
         <button className="btn btn-ghost btn-circle">
           <div className="indicator">
             <svg
@@ -63,6 +59,20 @@ function Navbar() {
             </svg>
             <span className="badge badge-xs badge-primary indicator-item"></span>
           </div>
+        </button>
+        <button className="btn btn-ghost btn-circle">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
         </button>
       </div>
     </div>

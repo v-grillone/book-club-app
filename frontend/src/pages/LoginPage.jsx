@@ -20,6 +20,7 @@ function LoginPage() {
       const res = await api.post('/user/login', form);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userId", res.data.user.id);
+      localStorage.setItem("username", res.data.user.username);
 
       console.log("Login successful:", res.data);
       navigate('/explore');

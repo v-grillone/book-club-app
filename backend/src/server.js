@@ -5,6 +5,7 @@ import connectDB from './config/db.js';
 import dotenv from 'dotenv';
 import bookClubRoutes from './routes/bookClubRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import postRoutes from './routes/postRoutes.js'
 
 // Load enviroment variables
 dotenv.config()
@@ -22,6 +23,7 @@ app.use(morgan('dev'));
 // Routes
 app.use('/', bookClubRoutes);
 app.use('/user', userRoutes);
+app.use('/post', postRoutes)
 
 
 // Database connection and server start
