@@ -15,7 +15,9 @@ export async function createPost(req, res) {
     });
 
     await newPost.save();
-    res.status(201).json({newPost});    
+
+    const populatedPost = await newPost.populate('user', 'username email')
+    res.status(201).json(populatedPost);    
   } catch (error) {
     console.error("Error creating post", error);
     res.status(500).json({ message: "Error creating post" });    

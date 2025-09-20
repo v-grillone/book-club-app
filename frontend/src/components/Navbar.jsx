@@ -1,14 +1,59 @@
-import { Link } from "react-router";
+import { Link, useNavigate, useLocation } from "react-router";
+import { useState } from 'react';
+import api from '../lib/axios.js'
 
 function Navbar() {
 
+  const [searchBar, setSearchBar] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+
   const username = localStorage.getItem('username');
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('username');
   }
+
+  const handleSearch = async (e) => {
+    if (e) e.preventDefault(); // only prevents default if e exists
+
+    // Toggle the search bar
+    setSearchBar((prev) => !prev);
+
+    // If search bar is visible, proceed with searching
+    if (searchBar) {
+      // Stop if searchValue is empty or just spaces
+      if (!searchValue.trim()) return
+
+      try {
+        const token = localStorage.getItem("token");
+        const res = await api.get(`/search?q=${searchValue}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (location.pathname === '/explore') {
+          navigate("/explore", { state: { results: res.data }});
+        } else {
+          navigate("/dashboard", { state: { results: res.data }});
+        }
+
+      } catch (error) {
+        console.error("Error searching book clubs", error);
+      }
+    }
+  };
+
+  const handleEnterSearch = async (e) => {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
+  }
+
 
   return (
     <div className="navbar bg-base-100 border-b-2">
@@ -43,7 +88,7 @@ function Navbar() {
       </div>
       <div className="navbar-end">
         <p className="text-sm">Welcome, {username}</p>
-        <button className="btn btn-ghost btn-circle">
+        <button onClick={()=>document.getElementById('notification_modal').showModal()} className="btn btn-ghost btn-circle">
           <div className="indicator">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +105,16 @@ function Navbar() {
             <span className="badge badge-xs badge-primary indicator-item"></span>
           </div>
         </button>
-        <button className="btn btn-ghost btn-circle">
+        {searchBar && (
+          <input 
+          type="text" className={`pl-4 pr-4 py-1 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm transition-all duration-300 ease-in-out`} 
+          placeholder="Search..."
+          autoFocus
+          value={searchValue}
+          onChange={(e) => {setSearchValue(e.target.value)}}
+          onKeyDown={handleEnterSearch} />
+        )}
+        <button onClick={handleSearch} className="btn btn-ghost btn-circle">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -74,6 +128,20 @@ function Navbar() {
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </button>
+        <dialog id="notification_modal" className="modal">
+          <div className="modal-box fixed top-16 right-0 max-w-[25%]">
+            <h3 className="font-bold text-lg">Notifications</h3>
+            <p className="py-4">Notification 1</p>
+            <p className="py-4">Notification 2</p>
+            <p className="py-4">Notification 3</p>
+            <div className="modal-action">
+              <form method="dialog">
+                {/* if there is a button, it will close the modal */}
+                <button className="btn">Close</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
       </div>
     </div>
   )

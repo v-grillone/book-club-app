@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../lib/axios.js";
 import { useParams } from "react-router";
+import { Reply, ThumbsUp, ThumbsDown } from "lucide-react";
 
 function BookClubPage() {
   const { id } = useParams();
@@ -129,8 +130,26 @@ function BookClubPage() {
               posts.map((post) => (
                 <div key={post._id} className="p-4 bg-base-200 rounded-lg shadow-sm border border-base-300 mb-2">
                   {/* Post content */}
-                  <p className="text-sm text-gray-500">Posted by <span className="font-semibold">{post.user.username}</span></p>
-                  <p className="mb-2 text-base">{post.content}</p>
+                  <div className="flex justify-between">
+                    <div className="flex-1 pr-4">
+                      <p className="text-sm text-gray-500 mb-1">Posted by <span className="font-semibold">{post.user.username}</span></p>
+                      <p className="text-base">{post.content}</p>
+                    </div>
+                    <div className="flex flex-col items-center gap-2 text-gray-500">
+                      <button className="hover:text-gray-700 transition">
+                        <Reply size={20} />
+                      </button>
+                      <div className="flex flex-col items-center">
+                        <button className="hover:text-green-700 transition">
+                          <ThumbsUp size={18} />
+                        </button>
+                        <p className="text-xs font-medium">0</p>
+                        <button className="hover:text-red-700 transition">
+                          <ThumbsDown size={18} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
 
                   {/* Replies section */}
                   <div className="mt-3 pl-3 border-l-2 border-gray-300 space-y-2">

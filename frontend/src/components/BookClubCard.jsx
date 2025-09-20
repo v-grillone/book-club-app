@@ -1,7 +1,10 @@
 import { formatDate } from '../lib/utils';
 import api from '../lib/axios';
+import { useNavigate } from 'react-router';
 
 function BookClubCard({ club, onDashboard }) {
+
+  const navigate = useNavigate()
 
   const handleJoin = async () => {
     try {
@@ -13,6 +16,7 @@ function BookClubCard({ club, onDashboard }) {
       );
 
       alert("You joined the club!");
+      navigate(`/${club._id}`)
       
     } catch (error) {
       console.error("Error joining club:", error);
@@ -22,7 +26,7 @@ function BookClubCard({ club, onDashboard }) {
   }
 
   return (
-    <div className={`card card-side bg-base-100 shadow-xl border border-base-200 hover:shadow-2xl transition duration-300 w-full max-w-2xl max-h-80 mx-auto ${onDashboard && 'cursor-pointer'}`}>
+     <div className={`card card-side bg-base-100 shadow-xl border border-base-200 hover:shadow-2xl transition duration-300 w-full max-w-2xl max-h-80 mx-auto ${onDashboard && 'cursor-pointer'}`}>
       <figure className='w-4/12'>
         <img
           src={club.coverImageURL}
@@ -39,7 +43,7 @@ function BookClubCard({ club, onDashboard }) {
         {!onDashboard && (
           <div className="card-actions justify-end">
             <button onClick={handleJoin} className="btn btn-primary">Join</button>
-        </div>
+          </div>    
         )}
       </div>
     </div>

@@ -69,3 +69,22 @@ export async function updateClub(req, res) {
     res.status(500).json({ message: "Error updating book club", error: error.message });
   }
 }
+
+export async function searchClub(req, res) {
+  const { q } = req.query;
+  try {
+    if (!q || !q.trim()) {
+      return res.status(400).json({ message: "Search query is required" });
+    }
+
+    const clubs = await BookClub.find({
+      title: { $regex: q, $options: 'i' },
+    });
+
+    res.status(200).json(clubs);
+  } catch (error) {
+    console.error("SearchClub Error:", error);
+    res.status(500).json({ message: "Error searching for book club", error: error.message });
+  }
+}
+
