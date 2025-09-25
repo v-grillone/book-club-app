@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import api from "../lib/axios.js"
+import toast from "react-hot-toast";
 
 function LoginPage() {
   const [form, setForm] = useState({
@@ -18,14 +19,16 @@ function LoginPage() {
     e.preventDefault();
     try {
       const res = await api.post('/user/login', form);
+      // Stoe token and user info
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userId", res.data.user.id);
       localStorage.setItem("username", res.data.user.username);
 
-      console.log("Login successful:", res.data);
+      toast.success('Login successful!')
       navigate('/explore');
     } catch (error) {
-      console.error("Login error:", error.response?.data || error.message);      
+      console.error("Login error:", error.response?.data || error.message); 
+      toast.error(error.response?.data.message || 'Login failed. Please try again.')     
     }
   };
 

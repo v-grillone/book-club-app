@@ -1,6 +1,7 @@
 import { Link, useNavigate, useLocation } from "react-router";
 import { useState } from 'react';
 import api from '../lib/axios.js'
+import toast from "react-hot-toast";
 
 function Navbar() {
 
@@ -16,6 +17,7 @@ function Navbar() {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('username');
+    toast.success('Logout Successful!');
   }
 
   const handleSearch = async (e) => {

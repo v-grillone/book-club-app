@@ -1,6 +1,7 @@
 import { formatDate } from '../lib/utils';
 import api from '../lib/axios';
 import { useNavigate } from 'react-router';
+import toast from 'react-hot-toast';
 
 function BookClubCard({ club, onDashboard }) {
 
@@ -15,12 +16,13 @@ function BookClubCard({ club, onDashboard }) {
         { headers: { Authorization: `Bearer ${token}`}}
       );
 
-      alert("You joined the club!");
+      toast.success('Book club joined!')
       navigate(`/${club._id}`)
       
     } catch (error) {
       console.error("Error joining club:", error);
       alert(error.response?.data?.message || "Failed to join club.");
+      toast.error(error.response?.data?.message || 'Failed to join club. Please try again.');
       
     }
   }

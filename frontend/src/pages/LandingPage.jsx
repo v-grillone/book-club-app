@@ -8,7 +8,7 @@ function LandingPage() {
       <div className="hero flex-grow bg-base-100">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <img
-            src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+            src="https://res.cloudinary.com/dfeldakrj/image/upload/v1758678628/landing-page-image_bxsaj7.jpg"
             className="max-w-sm rounded-lg shadow-2xl"
             alt="Book Club"
           />

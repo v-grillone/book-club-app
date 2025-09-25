@@ -43,7 +43,7 @@ function DashboardPage() {
 
 
       {searchResults.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-5xl">
           {searchResults.map((club) => (
             <div key={club._id} onClick={() => dashboardClick(club._id)}>
               <BookClubCard club={club} onDashboard />
@@ -56,7 +56,7 @@ function DashboardPage() {
           <Link to={"/explore"} className="btn btn-primary">Explore Clubs</Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-5xl mx-auto">
           {userClubs.map((club) => (
             <div key={club._id} onClick={() => {dashboardClick(club._id)}}>
               <BookClubCard club={club} onDashboard />
@@ -64,10 +64,12 @@ function DashboardPage() {
           ))}
         </div>
       )}
-      <div className="mt-10 text-center">
-        <p className="text-2xl mb-4 font-semibold">Find more clubs</p>
-        <Link to="/explore" className="btn btn-primary">Explore Clubs</Link>
-      </div>
+      {userClubs.length !== 0 && (
+        <div className="mt-10 text-center">
+          <p className="text-2xl mb-4 font-semibold">Find more clubs</p>
+          <Link to="/explore" className="btn btn-primary">Explore Clubs</Link>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import api from "../lib/axios.js";
+import toast from "react-hot-toast";
 
 function SignupPage() {
   const [form, setForm] = useState({
@@ -21,10 +22,12 @@ function SignupPage() {
     try {
       const res = await api.post('/user/sign-up', form);
       console.log('User created:', res.data);
+      toast.success('Account created!')
 
       navigate("/login");
     } catch (error) {
-      console.error("Error creating user:", error.response?.data || error.message);      
+      console.error("Error creating user:", error.response?.data || error.message);    
+      toast.error(error.response?.data.message || 'Failed to create account. Please try again.');  
       }
     }
   

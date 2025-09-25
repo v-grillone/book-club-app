@@ -23,7 +23,7 @@ app.use(morgan('dev'));
 // Routes
 app.use('/', bookClubRoutes);
 app.use('/user', userRoutes);
-app.use('/post', postRoutes)
+app.use('/post', postRoutes);
 
 
 // Database connection and server start
