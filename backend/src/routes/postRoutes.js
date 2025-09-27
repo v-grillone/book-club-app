@@ -10,4 +10,4 @@ postRouter.post('/:id/reply', authMiddleware, replyToPost);
 postRouter.patch('/:id/like', authMiddleware, likePost);
 postRouter.patch('/:id/dislike', authMiddleware, dislikePost);
 
-export default postRouter
+export default postRouter;

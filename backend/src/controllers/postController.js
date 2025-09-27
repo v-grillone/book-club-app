@@ -1,4 +1,7 @@
+import BookClub from "../models/BookClub.js";
 import Post from "../models/Post.js";
+import Notification from "../models/Notification.js";
+import User from "../models/User.js";
 
 // create a post
 export async function createPost(req, res) {
@@ -8,15 +11,33 @@ export async function createPost(req, res) {
   if (!content) return res.status(400).json({message: "content is required"});
 
   try {
+    const user = await User.findById(req.user.id).select("username");
+    if(!user) return res.status(404).json({ message: "User not found."});
+
     const newPost = new Post({
       club: clubId,
       user: req.user.id,
       content,
     });
-
     await newPost.save();
+    
+    // Notify other members of a post
+    const club = await BookClub.findById(clubId).populate("members", "_id username");
+    if(club){
+      const recipients = club.members.filter(member => member._id.toString() !== req.user.id);
 
-    const populatedPost = await newPost.populate('user', 'username email')
+      if(recipients.length > 0){
+        const notifications = recipients.map(member => ({
+          user: member._id,
+          type: "new_post",
+          message: `${user.username} posted in ${club.title}`,
+          link: `/${club._id}`          
+        }));
+        await Notification.insertMany(notifications);
+      }
+    }
+
+    const populatedPost = await Post.findById(newPost._id).populate("user", "username email");
     res.status(201).json(populatedPost);    
   } catch (error) {
     console.error("Error creating post", error);
@@ -48,15 +69,26 @@ export async function replyToPost(req, res) {
     const post = await Post.findById(postId);
     if (!post) return res.status(404).json({ message: 'Post not found.'});
 
+    const user = await User.findById(req.user.id).select("username");
+    if(!user) return res.status(404).json({ message: "User not found"});
+
     post.replies.push({
       user: req.user.id,
       content,
     });
-
     await post.save();
-    const populatedPost = await Post.populate('user', 'username email').populate('replies.user', 'username email');
 
-    console.log("Populated Post:", JSON.stringify(populatedPost, null, 2));
+    // Notification of replies to post
+    if(post.user.toString() !== req.user.id) {
+      await Notification.create({
+        user: post.user,
+        type: "reply",
+        message: `${user.username} replied to your post.`,
+        link: `/${post.club}`
+      })
+    }
+
+    const populatedPost = await Post.findById(post._id).populate("user", "username email").populate("replies.user", "username email");
 
     res.status(200).json(populatedPost);
 

@@ -5,7 +5,8 @@ import connectDB from './config/db.js';
 import dotenv from 'dotenv';
 import bookClubRoutes from './routes/bookClubRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-import postRoutes from './routes/postRoutes.js'
+import postRoutes from './routes/postRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
 
 // Load enviroment variables
 dotenv.config()
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 // Routes
+app.use('/notifications', notificationRoutes);
 app.use('/', bookClubRoutes);
 app.use('/user', userRoutes);
 app.use('/post', postRoutes);

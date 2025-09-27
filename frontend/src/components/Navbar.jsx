@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from "react-router";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../lib/axios.js'
 import toast from "react-hot-toast";
 
@@ -7,11 +7,29 @@ function Navbar() {
 
   const [searchBar, setSearchBar] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+  const [notifications, setNotifications] = useState([]);
+  const [loadingNotifications, setLoadingNotifications] = useState(false);
 
   const username = localStorage.getItem('username');
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+      const fetchNotifications = async () => {
+        try {
+          const token = localStorage.getItem("token");
+          const res = await api.get("/notifications/", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setNotifications(res.data);
+        } catch (error) {
+          console.error("Error fetching notifications:", error);
+          toast.error("Failed to load notifications");      
+        }
+      };
+      fetchNotifications();
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -56,6 +74,33 @@ function Navbar() {
     }
   }
 
+  const handleOpenNotification = async () => {
+    const modal = document.getElementById("notification_modal");
+    modal.showModal();
+    try {
+      setLoadingNotifications(true);
+      const token = localStorage.getItem('token');
+      // Fetch latest notifications
+      const res = await api.get('/notifications/', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setNotifications(res.data);
+
+      // Marks notifications as read
+      if(res.data.length > 0){
+        await api.patch("/notifications/mark-read", {}, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+      }      
+    } catch (error) {
+      console.error("Error marking notifications as read.", error);
+      toast.error("Failed to load notifications");      
+    } finally {
+      setLoadingNotifications(false); 
+    }
+  };
+
 
   return (
     <div className="navbar bg-base-100 border-b-2">
@@ -90,7 +135,8 @@ function Navbar() {
       </div>
       <div className="navbar-end">
         <p className="text-sm">Welcome, {username}</p>
-        <button onClick={()=>document.getElementById('notification_modal').showModal()} className="btn btn-ghost btn-circle">
+        <button onClick={handleOpenNotification}
+        className="btn btn-ghost btn-circle">
           <div className="indicator">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +150,9 @@ function Navbar() {
                 strokeWidth="2"
                 d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
-            <span className="badge badge-xs badge-primary indicator-item"></span>
+            {notifications.some(n => !n.read) && (
+              <span className="badge badge-xs badge-primary indicator-item"></span>
+            )}
           </div>
         </button>
         {searchBar && (
@@ -132,10 +180,24 @@ function Navbar() {
         </button>
         <dialog id="notification_modal" className="modal">
           <div className="modal-box fixed top-16 right-0 max-w-[25%]">
-            <h3 className="font-bold text-lg">Notifications</h3>
-            <p className="py-4">Notification 1</p>
-            <p className="py-4">Notification 2</p>
-            <p className="py-4">Notification 3</p>
+            <h3 className="font-bold text-lg mb-4">Notifications</h3>
+
+            {loadingNotifications ? (
+              <p className="py-4 text-gray-500">Loading...</p>
+            ) : notifications.length > 0 ? (
+              <ul className="space-y-2">
+                {notifications.map((n) => (
+                  <li key={n._id} className="p-2 bg-base-200 rounded-md">
+                    <Link to={n.link} className="hover:underline">
+                      {n.message}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="py-4 text-gray-500">No new notifications</p>
+            )}
+
             <div className="modal-action">
               <form method="dialog">
                 {/* if there is a button, it will close the modal */}
