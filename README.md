@@ -49,8 +49,8 @@ Backend
 
 1️⃣ Clone the Repository
 
-    - git clone https://github.com/your-username/readsocial.git
-    - cd readsocial
+    - git clone https://github.com/your-username/book-club-app.git
+    - cd book-club-app
 
 2️⃣ Install Dependencies
 
