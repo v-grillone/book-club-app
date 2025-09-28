@@ -55,10 +55,12 @@ Backend
 2️⃣ Install Dependencies
 
 Backend:
+
     - cd backend
     - npm install
 
 Frontend:
+
     - cd frontend
     - npm install
 
@@ -66,16 +68,18 @@ Frontend:
 
 Create a .env file in backend/ with:
 
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-PORT=5000
+    - MONGO_URI=your_mongodb_connection_string
+    - JWT_SECRET=your_jwt_secret
+    - PORT=5000
 
 4️⃣ Run the App
 
 Backend:
+
     - npm run dev
 
 Frontend:
+
     - npm run dev
 
 
